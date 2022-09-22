@@ -1,8 +1,8 @@
 import "./App.css"
 import { useState } from 'react'
 
-function App() { 
-  const [LeftNumber, setLeftNumber] = useState(0)
+function App() {
+  const [leftNumber, setLeftNumber] = useState(0)
   // const operationSimbol = useState('+')
   const [operationSimbol, setOperationSimbol] = useState('+')
   const [rightNumber, setRightNumber] = useState(0)
@@ -11,36 +11,63 @@ function App() {
   const [storeNumber, setStoreNumber] = useState(0)
 
   const getLeftNumber = (e) => {
-    setLeftNumber(parseInt(LeftNumber+e.target.innerText, 10))
+    if(leftNumber === 0) {
+      setLeftNumber(e.target.innerText)
+    }else if (e.target.innerText !== ".") {
+      setLeftNumber(leftNumber + e.target.innerText)
+    } else if (e.target.innerText === "." && !String(leftNumber).includes(".") ) {
+      setLeftNumber(leftNumber + e.target.innerText)
+    }
+  }
+
+  const recallLeftNumber = () => {
+    setLeftNumber(storeNumber)
   }
 
   const getRightNumber = (e) => {
-    setRightNumber(parseInt(rightNumber+e.target.innerText, 10))
+    if(rightNumber === 0) {
+      setRightNumber(e.target.innerText)
+    }else if (e.target.innerText !== ".") {
+      setRightNumber(rightNumber + e.target.innerText)
+    } else if (e.target.innerText === "." && !String(rightNumber).includes(".") ) {
+      setRightNumber(rightNumber + e.target.innerText)
+    }
+  }
+
+  const recallRightNumber = () => {
+    setRightNumber(storeNumber)
   }
 
   const getOperationSimbol = (e) => {
     setOperationSimbol(e.target.innerText)
   }
-  
+
   const setStore = () => {
-    console.log('before set store', storeNumber, resultNumber)
     setStoreNumber(resultNumber)
-    console.log('after set store', storeNumber)
   }
 
-  function getResult(){
+function roundBigNumber(number) {
+  if (number.toString().length > 14) {
+    return number.toFixed(3)
+  } else {
+    return number
+  }
+}
+
+  function getResult() {
     if (operationSimbol === "+") {
-      return (setResultNumber(LeftNumber+rightNumber), console.log('resultNumber:', resultNumber))
+      let risultato = Number(leftNumber) + Number(rightNumber)
+      return setResultNumber(roundBigNumber(Number(leftNumber) + Number(rightNumber)))
     } else if (operationSimbol === "-") {
-      return setResultNumber(LeftNumber-rightNumber)
+      return setResultNumber(roundBigNumber(Number(leftNumber) - Number(rightNumber)))
     } else if (operationSimbol === "*") {
-      return setResultNumber(LeftNumber*rightNumber)
+      return setResultNumber(roundBigNumber(Number(leftNumber) * Number(rightNumber)))
     } else if (operationSimbol === "÷") {
-      return setResultNumber(LeftNumber/rightNumber)
+      return setResultNumber(roundBigNumber(Number(leftNumber) / Number(rightNumber)))
     }
   }
- 
-  
+
+
   // const [LeftNumber, setLeftNumber] = useState(0)
   // const [operationSimbol, setoperationSimbol] = useState('+')
   // const [rightNumber, setrightNumber] = useState(0)
@@ -52,56 +79,61 @@ function App() {
   // const countStateArrayle = useState(0)
   return (
     <div className="calculator">
-        <div className="panel">
-          <p>{LeftNumber}</p>
-          <div className="numbers">
-            <button onClick={getLeftNumber}>1</button>
-            <button onClick={getLeftNumber}>2</button>
-            <button onClick={getLeftNumber}>3</button>
-            <button onClick={getLeftNumber}>4</button>
-            <button onClick={getLeftNumber}>5</button>
-            <button onClick={getLeftNumber}>6</button>
-            <button onClick={getLeftNumber}>7</button>
-            <button onClick={getLeftNumber}>8</button>
-            <button onClick={getLeftNumber}>9</button>
-            <button onClick={getLeftNumber}>0</button>
-            <button onClick={() => setLeftNumber(0)}>Clear</button>
-          </div>
+      <div className="panel">
+        <p>{leftNumber}</p>
+        <div className="numbers">
+          <button onClick={getLeftNumber}>1</button>
+          <button onClick={getLeftNumber}>2</button>
+          <button onClick={getLeftNumber}>3</button>
+          <button onClick={getLeftNumber}>4</button>
+          <button onClick={getLeftNumber}>5</button>
+          <button onClick={getLeftNumber}>6</button>
+          <button onClick={getLeftNumber}>7</button>
+          <button onClick={getLeftNumber}>8</button>
+          <button onClick={getLeftNumber}>9</button>
+          <button onClick={getLeftNumber}>0</button>
+          <button onClick={getLeftNumber}>.</button>
+          <button onClick={() => setLeftNumber(0)}>Clear</button>
+          <button onClick={recallLeftNumber}>Recall</button>
         </div>
-        
-        <div className="panel">
-          <p>{operationSimbol}</p>
-          <div className="numbers">
-            <button onClick={getOperationSimbol}>+</button>
-            <button onClick={getOperationSimbol}>-</button>
-            <button onClick={getOperationSimbol}>*</button>
-            <button onClick={getOperationSimbol}>÷</button>
-          </div>
-        </div>
+      </div>
 
-        <div className="panel">
-          <p>{rightNumber}</p>
-          <div className="numbers">
-            <button onClick={getRightNumber}>1</button>
-            <button onClick={getRightNumber}>2</button>
-            <button onClick={getRightNumber}>3</button>
-            <button onClick={getRightNumber}>4</button>
-            <button onClick={getRightNumber}>5</button>
-            <button onClick={getRightNumber}>6</button>
-            <button onClick={getRightNumber}>7</button>
-            <button onClick={getRightNumber}>8</button>
-            <button onClick={getRightNumber}>9</button>
-            <button onClick={getRightNumber}>0</button>
-            <button onClick={() => setRightNumber(0)}>Clear</button>
-          </div>
+      <div className="panel">
+        <p>{operationSimbol}</p>
+        <div className="numbers">
+          <button onClick={getOperationSimbol}>+</button>
+          <button onClick={getOperationSimbol}>-</button>
+          <button onClick={getOperationSimbol}>*</button>
+          <button onClick={getOperationSimbol}>÷</button>
         </div>
-        <div className="panel answer">
-          <p>{resultNumber}</p>
-          <div>
-            <button onClick={getResult}>=</button>
-            <button onClick={setStore}>Store</button>
-          </div>
+      </div>
+
+      <div className="panel">
+        <p>{rightNumber}</p>
+        <div className="numbers">
+          <button onClick={getRightNumber}>1</button>
+          <button onClick={getRightNumber}>2</button>
+          <button onClick={getRightNumber}>3</button>
+          <button onClick={getRightNumber}>4</button>
+          <button onClick={getRightNumber}>5</button>
+          <button onClick={getRightNumber}>6</button>
+          <button onClick={getRightNumber}>7</button>
+          <button onClick={getRightNumber}>8</button>
+          <button onClick={getRightNumber}>9</button>
+          <button onClick={getRightNumber}>0</button>
+          <button onClick={getRightNumber}>.</button>
+          <button onClick={() => setRightNumber(0)}>Clear</button>
+          <button onClick={recallRightNumber}>Recall</button>
         </div>
+      </div>
+      <div className="panel answer">
+        <p>{resultNumber}</p>
+        <div>
+          <button onClick={getResult}>=</button>
+          <button onClick={setStore}>Store</button>
+          <button>Stored Number: {storeNumber}</button>
+        </div>
+      </div>
     </div>
   )
 }
