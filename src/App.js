@@ -7,7 +7,8 @@ function App() {
   const [operationSimbol, setOperationSimbol] = useState('+')
   const [rightNumber, setRightNumber] = useState(0)
   // const resultNumber = getResult()
-  const [resultNumber, setresultNumber] = useState(0)
+  const [resultNumber, setResultNumber] = useState(0)
+  const [storeNumber, setStoreNumber] = useState(0)
 
   const getLeftNumber = (e) => {
     setLeftNumber(parseInt(LeftNumber+e.target.innerText, 10))
@@ -21,16 +22,21 @@ function App() {
     setOperationSimbol(e.target.innerText)
   }
   
+  const setStore = () => {
+    console.log('before set store', storeNumber, resultNumber)
+    setStoreNumber(resultNumber)
+    console.log('after set store', storeNumber)
+  }
 
   function getResult(){
     if (operationSimbol === "+") {
-      return setresultNumber(LeftNumber+rightNumber)
+      return (setResultNumber(LeftNumber+rightNumber), console.log('resultNumber:', resultNumber))
     } else if (operationSimbol === "-") {
-      return setresultNumber(LeftNumber-rightNumber)
+      return setResultNumber(LeftNumber-rightNumber)
     } else if (operationSimbol === "*") {
-      return setresultNumber(LeftNumber*rightNumber)
+      return setResultNumber(LeftNumber*rightNumber)
     } else if (operationSimbol === "÷") {
-      return setresultNumber(LeftNumber/rightNumber)
+      return setResultNumber(LeftNumber/rightNumber)
     }
   }
  
@@ -93,6 +99,7 @@ function App() {
           <p>{resultNumber}</p>
           <div>
             <button onClick={getResult}>=</button>
+            <button onClick={setStore}>Store</button>
           </div>
         </div>
     </div>
