@@ -47,7 +47,7 @@ function App() {
   }
 
 function roundBigNumber(number) {
-  if (number.toString().length > 14) {
+  if (number.toString().length > 14 && String(number).includes(".")) {
     return number.toFixed(3)
   } else {
     return number
